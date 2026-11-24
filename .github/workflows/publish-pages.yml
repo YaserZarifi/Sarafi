@@ -1,36 +1,103 @@
-name: Publish Sarafi website
+name: Publish Sarafi website and rates
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      feed:
+        description: Feed or website to publish
+        type: choice
+        options: [site, test, production, verify-publisher]
+        default: site
+  schedule:
+    # 08:37 through 18:22 in Kabul.
+    - cron: '7,22,37,52 4-13 * * *'
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
 
 concurrency:
   group: github-pages
   cancel-in-progress: false
 
 jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main' && (github.event_name != 'schedule' || vars.SARAFI_PRODUCTION_RATES == 'true')
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Refresh the feed
+        if: github.event_name == 'schedule' || (inputs.feed != '' && inputs.feed != 'site')
+        env:
+          FEED: ${{ inputs.feed || 'production' }}
+          SARAFI_COLLECTOR_READ_KEY: ${{ secrets.SARAFI_COLLECTOR_READ_KEY }}
+          SARAFI_TELEGRAM_API_ID: ${{ secrets.SARAFI_TELEGRAM_API_ID }}
+          SARAFI_TELEGRAM_API_HASH: ${{ secrets.SARAFI_TELEGRAM_API_HASH }}
+          SARAFI_TELEGRAM_SESSION: ${{ secrets.SARAFI_TELEGRAM_SESSION }}
+          PRODUCTION_ENABLED: ${{ vars.SARAFI_PRODUCTION_RATES }}
+        run: |
+          set -eu
+          if [[ "$FEED" == production && "$PRODUCTION_ENABLED" != true ]]; then
+            echo "::error::Enable SARAFI_PRODUCTION_RATES after the production sources are cleared for use."
+            exit 1
+          fi
+          : "${SARAFI_COLLECTOR_READ_KEY:?Missing private collector read key}"
+          temporary="$(mktemp -d)"
+          trap 'rm -rf -- "$temporary"' EXIT
+          umask 077
+          printf '%s\n' "$SARAFI_COLLECTOR_READ_KEY" > "$temporary/key"
+          unset SARAFI_COLLECTOR_READ_KEY
+          printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$temporary/known_hosts"
+          export GIT_SSH_COMMAND="ssh -i $temporary/key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$temporary/known_hosts"
+          private_repo=git@github.com:YaserZarifi/SarafiCalc.git
+
+          if [[ "$FEED" == verify-publisher ]]; then
+            git ls-remote --exit-code "$private_repo" refs/heads/feature/sarafi-v1 > /dev/null
+            FEED=test
+            if [[ ! -f rates/test.json ]]; then
+              printf '%s\n' '{"version":1,"source":"nerkhyaaab","quotes":[]}' > rates/test.json
+            fi
+          else
+            : "${SARAFI_TELEGRAM_API_ID:?Missing Telegram App ID}"
+            : "${SARAFI_TELEGRAM_API_HASH:?Missing Telegram API hash}"
+            : "${SARAFI_TELEGRAM_SESSION:?Missing Telegram session}"
+            collector="$temporary/collector"
+            git clone --quiet --depth=1 --filter=blob:none --no-checkout --branch feature/sarafi-v1 "$private_repo" "$collector"
+            git -C "$collector" sparse-checkout set tools/market-rates
+            git -C "$collector" checkout --quiet
+            python3 -m venv "$temporary/venv"
+            "$temporary/venv/bin/python" -m pip install --disable-pip-version-check -r "$collector/tools/market-rates/requirements.txt"
+            args=(--output "rates/$FEED.json")
+            if [[ "$FEED" == test ]]; then args+=(--test); fi
+            "$temporary/venv/bin/python" "$collector/tools/market-rates/snapshot.py" "${args[@]}"
+          fi
+          unset GIT_SSH_COMMAND SARAFI_TELEGRAM_API_ID SARAFI_TELEGRAM_API_HASH SARAFI_TELEGRAM_SESSION
+          git add -- "rates/$FEED.json"
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name='Sarafi Rates' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m "chore: refresh Sarafi $FEED rates"
+          git push origin HEAD:main
+      - name: Package the public website
+        run: |
+          mkdir _site
+          cp -R .nojekyll index.html styles.css rates.js assets en ps privacy rates _site/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
   publish:
+    needs: prepare
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Package the public website
-        run: |
-          mkdir _site
-          cp -R .nojekyll index.html styles.css rates.js assets en ps privacy rates _site/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
       - name: Publish to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
