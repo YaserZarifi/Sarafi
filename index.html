@@ -7,11 +7,12 @@
   <title>صرافی | شمارش پول نقد برای اندروید</title>
   <link rel="icon" href="assets/sarafi.png">
   <link rel="stylesheet" href="styles.css">
+  <script type="module" src="rates.js"></script>
 </head>
 <body>
   <header class="wrap topbar">
     <a class="brand" href="./"><img src="assets/sarafi.png" width="44" height="44" alt=""><span>صرافی</span></a>
-    <nav aria-label="صفحه اصلی"><a href="#features">امکانات</a><a href="#download">دانلود</a><a href="privacy/">سیاست حریم خصوصی</a></nav>
+    <nav aria-label="صفحه اصلی"><a href="#features">امکانات</a><a href="#rates">نرخ اسعار</a><a href="#download">دانلود</a><a href="privacy/">سیاست حریم خصوصی</a></nav>
     <nav class="language-nav" aria-label="Language"><a href="./" lang="fa-AF" aria-current="page">دری</a><a href="ps/" lang="ps-AF">پښتو</a><a href="en/" lang="en">English</a></nav>
   </header>
   <main class="wrap">
@@ -20,7 +21,7 @@
         <p class="platform">شمارش پول نقد برای اندروید</p>
         <h1 id="intro">هر بانکنوت را با دقت بشمارید</h1>
         <p class="lede">پول نقد را بر اساس ارزش بانکنوت و سکه بشمارید، مجموع را بررسی کنید و اسعار را با نرخ دلخواه تبدیل کنید. سوابق ذخیره‌شده روی دستگاه شما می‌ماند.</p>
-        <a class="pill" href="#download">دانلود برای اندروید</a>
+        <div class="hero-actions"><a class="pill" href="#download">دانلود برای اندروید</a><a class="pill secondary" href="#rates">دیدن نرخ اسعار</a></div>
       </div>
       <div class="preview">
         <figure class="counter">
@@ -36,18 +37,26 @@
         </figure>
       </div>
     </section>
+    <section class="market-rates" id="rates" aria-labelledby="rates-title" data-feed="rates/production.json">
+      <div class="rates-header">
+        <div><h2 id="rates-title">نرخ اسعار</h2><p>نرخ خرید و فروش بازارهای افغانستان را همراه با نام منبع و زمان نشر ببینید.</p></div>
+        <label class="rates-filter" hidden>بازار<select data-market></select></label>
+      </div>
+      <p class="rates-status" data-status role="status">هنوز نرخی برای نمایش در دسترس نیست.</p>
+      <div class="rates-grid" data-quotes></div>
+    </section>
     <section class="features" id="features" aria-labelledby="features-title">
       <h2 id="features-title">از شمارش تا ثبت</h2>
       <div class="feature-grid">
-        <article><h3>شمارش و بررسی</h3><p>بانکنوت‌ها و سکه‌ها را در فهرست یا شبکه وارد کنید و نتیجه را با مبلغ مورد انتظار مقایسه کنید.</p></article>
-        <article><h3>تبدیل با نرخ دلخواه</h3><p>نرخ را وارد کنید و نتیجهٔ تبدیل را پیش از ذخیره بررسی کنید.</p></article>
-        <article><h3>یافتن سوابق</h3><p>شمارش‌ها و تبدیل‌ها را همراه با یادداشت ذخیره کنید و بعداً بر اساس واحد پول یا تاریخ بیابید.</p></article>
+        <article><h3>حسابگر پول نقد</h3><p>بانکنوت‌ها، سکه‌ها و بسته‌ها را در فهرست یا شبکه بشمارید و کمبود یا اضافه را با مبلغ مورد انتظار مقایسه کنید.</p></article>
+        <article><h3>تبادلهٔ اسعار و ماشین حساب</h3><p>با نرخ دلخواه تبدیل کنید، جهت تبادله را برگردانید و محاسبات را در همان برنامه انجام دهید.</p></article>
+        <article><h3>سوابق روی دستگاه</h3><p>شمارش‌ها و تبدیل‌ها را با یادداشت ذخیره کنید، بر اساس تاریخ یا واحد پول بیابید و نتیجه را به اشتراک بگذارید.</p></article>
       </div>
       <p class="languages">از دری، پشتو یا انگلیسی استفاده کنید. تقویم میلادی و هجری خورشیدی افغانستان در دسترس است.</p>
     </section>
     <section class="download" id="download" aria-labelledby="download-title">
       <h2 id="download-title">دانلود برای اندروید</h2>
-      <p>نسخهٔ آفلاین صرافی برای اندروید ۸.۰ یا بالاتر.</p>
+      <p>نسخهٔ آفلاین صرافی برای اندروید ۸.۰ یا بالاتر. نرخ‌های بازار در این صفحه در دسترس‌اند.</p>
       <div class="download-links">
         <a class="pill" href="https://github.com/YaserZarifi/Sarafi/releases/download/v1.0.0/Sarafi.apk">دانلود Sarafi.apk</a>
         <a class="pill secondary" href="https://play.google.com/store/apps/details?id=com.yaserzarifi.sarafi.ads">در انتظار انتشار در گوگل پلی</a>

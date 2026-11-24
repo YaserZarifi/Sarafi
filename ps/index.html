@@ -7,11 +7,12 @@
   <title>صرافي | د اندروید لپاره د نغدو پیسو شمېرونکی</title>
   <link rel="icon" href="../assets/sarafi.png">
   <link rel="stylesheet" href="../styles.css">
+  <script type="module" src="../rates.js"></script>
 </head>
 <body>
   <header class="wrap topbar">
     <a class="brand" href="./"><img src="../assets/sarafi.png" width="44" height="44" alt=""><span>صرافي</span></a>
-    <nav aria-label="کورپاڼه"><a href="#features">ځانګړنې</a><a href="#download">ډاونلوډ</a><a href="privacy/">د محرمیت تګلاره</a></nav>
+    <nav aria-label="کورپاڼه"><a href="#features">ځانګړنې</a><a href="#rates">د اسعارو نرخونه</a><a href="#download">ډاونلوډ</a><a href="privacy/">د محرمیت تګلاره</a></nav>
     <nav class="language-nav" aria-label="Language"><a href="../" lang="fa-AF">دری</a><a href="../ps/" lang="ps-AF" aria-current="page">پښتو</a><a href="../en/" lang="en">English</a></nav>
   </header>
   <main class="wrap">
@@ -20,7 +21,7 @@
         <p class="platform">د اندروید لپاره د نغدو پیسو شمېرونکی</p>
         <h1 id="intro">هر بانکنوټ په دقت وشمېرئ</h1>
         <p class="lede">نغدې پیسې د بانکنوټ او سکې د ارزښت له مخې وشمېرئ، ټولټال وګورئ او اسعار په خپل نرخ بدل کړئ. خوندي شوي ریکارډونه پر خپلې وسیلې پاتې کېږي.</p>
-        <a class="pill" href="#download">د اندروید لپاره ډاونلوډ</a>
+        <div class="hero-actions"><a class="pill" href="#download">د اندروید لپاره ډاونلوډ</a><a class="pill secondary" href="#rates">د اسعارو نرخونه وګورئ</a></div>
       </div>
       <div class="preview">
         <figure class="counter">
@@ -36,18 +37,26 @@
         </figure>
       </div>
     </section>
+    <section class="market-rates" id="rates" aria-labelledby="rates-title" data-feed="../rates/production.json">
+      <div class="rates-header">
+        <div><h2 id="rates-title">د اسعارو نرخونه</h2><p>د افغانستان د بازارونو د پېر او پلور نرخونه، د سرچینې نوم او د خپرېدو وخت وګورئ.</p></div>
+        <label class="rates-filter" hidden>بازار<select data-market></select></label>
+      </div>
+      <p class="rates-status" data-status role="status">تر اوسه د ښودلو لپاره نرخونه نشته.</p>
+      <div class="rates-grid" data-quotes></div>
+    </section>
     <section class="features" id="features" aria-labelledby="features-title">
       <h2 id="features-title">له شمېرلو تر ثبتولو</h2>
       <div class="feature-grid">
-        <article><h3>شمېرل او پرتله کول</h3><p>بانکنوټونه او سکې په لېست یا جال کې ولیکئ او ټولټال له تمه شوي مبلغ سره پرتله کړئ.</p></article>
-        <article><h3>په خپل نرخ بدلول</h3><p>نرخ ولیکئ او تر خوندي کولو مخکې د بدلون پایله وګورئ.</p></article>
-        <article><h3>پخواني ریکارډونه موندل</h3><p>شمېرنې او بدلونونه له یادښتونو سره خوندي کړئ او وروسته یې د اسعارو یا نېټې له مخې ومومئ.</p></article>
+        <article><h3>د نغدو پیسو حسابګر</h3><p>بانکنوټونه، سکې او بنډلونه په لېست یا جال کې وشمېرئ او له تمه شوي مبلغ سره یې پرتله کړئ.</p></article>
+        <article><h3>د اسعارو تبادله او حسابګر</h3><p>په خپل نرخ اسعار بدل کړئ، د تبادلې لوری واړوئ او حساب په اپ کې ترسره کړئ.</p></article>
+        <article><h3>پر وسیله خوندي ریکارډونه</h3><p>شمېرنې او تبادلې له یادښتونو سره خوندي کړئ، د نېټې یا اسعارو له مخې یې ومومئ او پایله شریکه کړئ.</p></article>
       </div>
       <p class="languages">دري، پښتو یا انګلیسي وکاروئ. میلادي او د افغانستان لمریز هجري کلیزونه شته.</p>
     </section>
     <section class="download" id="download" aria-labelledby="download-title">
       <h2 id="download-title">د اندروید لپاره ډاونلوډ</h2>
-      <p>د صرافۍ آفلاین نسخه د اندروید ۸.۰ یا تر هغې نوې نسخې لپاره.</p>
+      <p>د صرافۍ آفلاین نسخه د اندروید ۸.۰ یا تر هغې نوې نسخې لپاره. د بازار نرخونه په همدې پاڼه کې وګورئ.</p>
       <div class="download-links">
         <a class="pill" href="https://github.com/YaserZarifi/Sarafi/releases/download/v1.0.0/Sarafi.apk">Sarafi.apk ډاونلوډ کړئ</a>
         <a class="pill secondary" href="https://play.google.com/store/apps/details?id=com.yaserzarifi.sarafi.ads">په ګوګل پلی کې تر خپرېدو پورې</a>

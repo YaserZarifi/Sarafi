@@ -1,0 +1,36 @@
+name: Publish Sarafi website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Package the public website
+        run: |
+          mkdir _site
+          cp -R .nojekyll index.html styles.css rates.js assets en ps privacy rates _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
