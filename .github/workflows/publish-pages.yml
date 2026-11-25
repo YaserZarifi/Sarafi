@@ -90,6 +90,10 @@ jobs:
               fi
             done
             if [[ "$refreshed" == 0 ]]; then exit 1; fi
+            combined=(--combine --output-dir rates)
+            if [[ "$PRODUCTION_ENABLED" == true ]]; then combined+=(--include-production); fi
+            "$temporary/venv/bin/python" "$collector/tools/market-rates/watch.py" "${combined[@]}"
+            git add -- rates/live.json
           fi
           unset GIT_SSH_COMMAND SARAFI_TELEGRAM_API_ID SARAFI_TELEGRAM_API_HASH SARAFI_TELEGRAM_SESSION
           if git diff --cached --quiet; then exit 0; fi
