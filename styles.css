@@ -98,12 +98,12 @@ figcaption { margin-top: .8rem; text-align: center; font-size: .875rem; }
 .rates-grid:not(:empty) { margin-top: 1.2rem; }
 .rate-card { min-width: 0; padding: 1rem; border-radius: 1rem; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .rate-card h3 { letter-spacing: normal; margin-block: .25rem; }
-.rate-market, .rate-unit, .rate-meta { color: var(--muted); font-size: .85rem; }
+.rate-market, .rate-unit, .rate-time { color: var(--muted); font-size: .85rem; }
 .rate-prices { margin-block: .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
 .rate-prices div { padding: .55rem .65rem; border-radius: .65rem; background: var(--field); min-width: 0; }
 .rate-prices dt { color: var(--muted); font-size: .85rem; }
 .rate-prices dd { margin: 0; font-weight: 750; font-size: 1.1rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.rate-meta { display: flex; justify-content: space-between; gap: .4rem .75rem; flex-wrap: wrap; align-items: baseline; }
+.rate-time { display: block; }
 .features h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); }
 .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-block: 1.5rem; }
 .feature-grid article { border: 1px solid var(--line); border-radius: 1.25rem; background: var(--surface); padding: 1.35rem; }

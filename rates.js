@@ -23,7 +23,7 @@ const copy = {
     toman: "تومان", bank: "بانکي تومان", cheque: "تومان چک",
   },
 }[language];
-const sources = { nerkh_yab: "NERKH_YAB", kabulnarkh: "KabulNarkh", nerkhsarafan: "nerkhsarafan" };
+const sources = new Set(["nerkh_yab", "kabulnarkh", "nerkhsarafan"]);
 
 if (panel && copy) {
   const locale = document.documentElement.lang;
@@ -70,15 +70,10 @@ if (panel && copy) {
         group.append(element("dt", label), value);
         prices.append(group);
       }
-      const source = element("a", "@" + sources[quote.source]);
-      source.href = "https://t.me/" + sources[quote.source] + "/" + quote.messageId;
-      source.dir = "ltr";
-      const time = element("time");
+      const time = element("time", undefined, "rate-time");
       time.dateTime = new Date(quote.postedAt).toISOString();
       time.dataset.postedAt = quote.postedAt;
-      const footer = element("div", undefined, "rate-meta");
-      footer.append(source, time);
-      card.append(prices, footer);
+      card.append(prices, time);
       return card;
     }));
     updateTimes();
@@ -98,7 +93,7 @@ if (panel && copy) {
   function valid(quote) {
     const currencyCode = /^[A-Z][A-Z_]{2,15}$/;
     const price = /^\d{1,24}(?:\.\d{1,12})?$/;
-    return quote && Object.hasOwn(copy.markets, quote.market) && Object.hasOwn(sources, quote.source) &&
+    return quote && Object.hasOwn(copy.markets, quote.market) && sources.has(quote.source) &&
       currencyCode.test(quote.base) && currencyCode.test(quote.counter) &&
       typeof quote.buy === "string" && price.test(quote.buy) && typeof quote.sell === "string" && price.test(quote.sell) &&
       Number.isSafeInteger(quote.messageId) && quote.messageId > 0 &&
