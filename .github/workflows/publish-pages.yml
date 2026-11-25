@@ -106,7 +106,7 @@ jobs:
         if: github.event_name != 'schedule' || steps.refresh.outputs.updated == 'true'
         run: |
           mkdir _site
-          cp -R .nojekyll index.html styles.css rates.js assets en ps privacy rates _site/
+          cp -R .nojekyll index.html styles.css rates.js assets en ps privacy rates app-ads.txt _site/
           echo 'ready=true' >> "$GITHUB_OUTPUT"
       - uses: actions/upload-pages-artifact@v4
         if: steps.package.outputs.ready == 'true'
