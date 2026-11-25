@@ -7,12 +7,11 @@
   <title>صرافی | نرخ زندهٔ اسعار و حسابگر پول</title>
   <link rel="icon" href="assets/sarafi.png">
   <link rel="stylesheet" href="styles.css">
-  <script type="module" src="rates.js"></script>
 </head>
 <body>
   <header class="wrap topbar">
     <a class="brand" href="./"><img src="assets/sarafi.png" width="44" height="44" alt=""><span>صرافی</span></a>
-    <nav aria-label="صفحه اصلی"><a href="#features">امکانات</a><a href="#rates">نرخ اسعار</a><a href="#download">دانلود</a><a href="privacy/">سیاست حریم خصوصی</a></nav>
+    <nav aria-label="صفحه اصلی"><a href="#features">امکانات</a><a href="#download">دانلود</a><a href="privacy/">سیاست حریم خصوصی</a></nav>
     <nav class="language-nav" aria-label="Language"><a href="./" lang="fa-AF" aria-current="page">دری</a><a href="ps/" lang="ps-AF">پښتو</a><a href="en/" lang="en">English</a></nav>
   </header>
   <main class="wrap">
@@ -20,12 +19,11 @@
       <div class="intro">
         <h1 id="intro">نرخ زندهٔ اسعار برای صرافان</h1>
         <p class="lede">نرخ خرید و فروش بازارهای افغانستان را ببینید، اسعار را تبدیل کنید و با حسابگر صرافی پول نقد را بشمارید.</p>
-        <div class="hero-actions"><a class="pill" href="#rates">دیدن نرخ اسعار</a><a class="pill secondary" href="#download">دانلود برای اندروید</a></div>
+        <a class="pill" href="#download">دانلود برای اندروید</a>
       </div>
       <div class="preview">
         <figure class="counter">
           <div class="counter-header"><strong>صرافی</strong><span class="currency"><img src="assets/flags/af.png" width="24" height="18" alt=""><bdi>افغانی</bdi></span></div>
-          <div class="preview-rate" data-hero-quote hidden></div>
           <div class="total"><div><span>مجموع پول نقد</span><strong><bdi>11,500</bdi> <small><bdi>AFN</bdi></small></strong></div><span>۱۳ قطعه</span></div>
           <div class="cards">
             <div class="note"><div><span>ارزش پول</span><strong><bdi>1,000</bdi></strong></div><div class="quantity"><span>تعداد</span><strong><bdi>10</bdi></strong></div><div class="subtotal"><span>مجموع ردیف</span><strong><bdi>10,000</bdi></strong></div></div>
@@ -34,14 +32,6 @@
           <figcaption>نمای شمارش پول با ارقام نمونه</figcaption>
         </figure>
       </div>
-    </section>
-    <section class="market-rates" id="rates" aria-labelledby="rates-title" data-feed="rates/production.json">
-      <div class="rates-header">
-        <div><h2 id="rates-title">نرخ اسعار</h2><p>نرخ خرید و فروش بازارهای افغانستان را همراه با زمان نشر ببینید.</p></div>
-        <label class="rates-filter" hidden>بازار<select data-market></select></label>
-      </div>
-      <p class="rates-status" data-status role="status">هنوز نرخی برای نمایش در دسترس نیست.</p>
-      <div class="rates-grid" data-quotes></div>
     </section>
     <section class="features" id="features" aria-labelledby="features-title">
       <h2 id="features-title">از شمارش تا ثبت</h2>

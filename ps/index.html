@@ -7,12 +7,11 @@
   <title>صرافي | ژوندي نرخونه او د نغدو پیسو حسابګر</title>
   <link rel="icon" href="../assets/sarafi.png">
   <link rel="stylesheet" href="../styles.css">
-  <script type="module" src="../rates.js"></script>
 </head>
 <body>
   <header class="wrap topbar">
     <a class="brand" href="./"><img src="../assets/sarafi.png" width="44" height="44" alt=""><span>صرافي</span></a>
-    <nav aria-label="کورپاڼه"><a href="#features">ځانګړنې</a><a href="#rates">د اسعارو نرخونه</a><a href="#download">ډاونلوډ</a><a href="privacy/">د محرمیت تګلاره</a></nav>
+    <nav aria-label="کورپاڼه"><a href="#features">ځانګړنې</a><a href="#download">ډاونلوډ</a><a href="privacy/">د محرمیت تګلاره</a></nav>
     <nav class="language-nav" aria-label="Language"><a href="../" lang="fa-AF">دری</a><a href="../ps/" lang="ps-AF" aria-current="page">پښتو</a><a href="../en/" lang="en">English</a></nav>
   </header>
   <main class="wrap">
@@ -20,12 +19,11 @@
       <div class="intro">
         <h1 id="intro">د صرافانو لپاره ژوندي نرخونه</h1>
         <p class="lede">د افغانستان د بازارونو د پېر او پلور نرخونه وګورئ، اسعار بدل کړئ او د صرافۍ په حسابګر نغدې پیسې وشمېرئ.</p>
-        <div class="hero-actions"><a class="pill" href="#rates">ژوندي نرخونه وګورئ</a><a class="pill secondary" href="#download">د اندروید لپاره ډاونلوډ</a></div>
+        <a class="pill" href="#download">د اندروید لپاره ډاونلوډ</a>
       </div>
       <div class="preview">
         <figure class="counter">
           <div class="counter-header"><strong>صرافي</strong><span class="currency"><img src="../assets/flags/af.png" width="24" height="18" alt=""><bdi>افغانۍ</bdi></span></div>
-          <div class="preview-rate" data-hero-quote hidden></div>
           <div class="total"><div><span>د نغدو پیسو ټولټال</span><strong><bdi>11,500</bdi> <small><bdi>AFN</bdi></small></strong></div><span>۱۳ دانې</span></div>
           <div class="cards">
             <div class="note"><div><span>ارزښت</span><strong><bdi>1,000</bdi></strong></div><div class="quantity"><span>شمېر</span><strong><bdi>10</bdi></strong></div><div class="subtotal"><span>فرعي ټولټال</span><strong><bdi>10,000</bdi></strong></div></div>
@@ -34,14 +32,6 @@
           <figcaption>له بېلګه‌ییزو شمېرو سره د نغدو پیسو د شمېرلو مخکتنه</figcaption>
         </figure>
       </div>
-    </section>
-    <section class="market-rates" id="rates" aria-labelledby="rates-title" data-feed="../rates/production.json">
-      <div class="rates-header">
-        <div><h2 id="rates-title">د اسعارو نرخونه</h2><p>د افغانستان د بازارونو د پېر او پلور نرخونه او د خپرېدو وخت وګورئ.</p></div>
-        <label class="rates-filter" hidden>بازار<select data-market></select></label>
-      </div>
-      <p class="rates-status" data-status role="status">تر اوسه د ښودلو لپاره نرخونه نشته.</p>
-      <div class="rates-grid" data-quotes></div>
     </section>
     <section class="features" id="features" aria-labelledby="features-title">
       <h2 id="features-title">له شمېرلو تر ثبتولو</h2>

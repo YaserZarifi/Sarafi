@@ -7,12 +7,11 @@
   <title>Sarafi | Live exchange rates and cash calculator</title>
   <link rel="icon" href="../assets/sarafi.png">
   <link rel="stylesheet" href="../styles.css">
-  <script type="module" src="../rates.js"></script>
 </head>
 <body>
   <header class="wrap topbar">
     <a class="brand" href="./"><img src="../assets/sarafi.png" width="44" height="44" alt=""><span>Sarafi</span></a>
-    <nav aria-label="Home"><a href="#features">Features</a><a href="#rates">Market rates</a><a href="#download">Download</a><a href="privacy/">Privacy policy</a></nav>
+    <nav aria-label="Home"><a href="#features">Features</a><a href="#download">Download</a><a href="privacy/">Privacy policy</a></nav>
     <nav class="language-nav" aria-label="Language"><a href="../" lang="fa-AF">دری</a><a href="../ps/" lang="ps-AF">پښتو</a><a href="../en/" lang="en" aria-current="page">English</a></nav>
   </header>
   <main class="wrap">
@@ -20,12 +19,11 @@
       <div class="intro">
         <h1 id="intro">Live rates for money exchangers</h1>
         <p class="lede">Follow buy and sell rates across Afghan markets. Convert currencies and count cash with Sarafi’s built-in calculator.</p>
-        <div class="hero-actions"><a class="pill" href="#rates">View live rates</a><a class="pill secondary" href="#download">Download for Android</a></div>
+        <a class="pill" href="#download">Download for Android</a>
       </div>
       <div class="preview">
         <figure class="counter">
           <div class="counter-header"><strong>Sarafi</strong><span class="currency"><img src="../assets/flags/af.png" width="24" height="18" alt=""><bdi>Afghani</bdi></span></div>
-          <div class="preview-rate" data-hero-quote hidden></div>
           <div class="total"><div><span>Total cash</span><strong><bdi>11,500</bdi> <small><bdi>AFN</bdi></small></strong></div><span>13 pieces</span></div>
           <div class="cards">
             <div class="note"><div><span>Denomination</span><strong><bdi>1,000</bdi></strong></div><div class="quantity"><span>Quantity</span><strong><bdi>10</bdi></strong></div><div class="subtotal"><span>Subtotal</span><strong><bdi>10,000</bdi></strong></div></div>
@@ -34,14 +32,6 @@
           <figcaption>Cash counter preview with sample values</figcaption>
         </figure>
       </div>
-    </section>
-    <section class="market-rates" id="rates" aria-labelledby="rates-title" data-feed="../rates/production.json">
-      <div class="rates-header">
-        <div><h2 id="rates-title">Market rates</h2><p>See buy and sell quotes from Afghan markets and when they were posted.</p></div>
-        <label class="rates-filter" hidden>Market<select data-market></select></label>
-      </div>
-      <p class="rates-status" data-status role="status">Market rates will appear here when the feed is available.</p>
-      <div class="rates-grid" data-quotes></div>
     </section>
     <section class="features" id="features" aria-labelledby="features-title">
       <h2 id="features-title">From the count to the record</h2>
