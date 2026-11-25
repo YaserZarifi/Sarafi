@@ -11,8 +11,7 @@ on:
         options: [site, test, production, verify-publisher]
         default: site
   schedule:
-    # 08:37 through 18:22 in Kabul.
-    - cron: '7,22,37,52 4-13 * * *'
+    - cron: '7,22,37,52 * * * *'
 
 permissions: {}
 
@@ -22,7 +21,9 @@ concurrency:
 
 jobs:
   prepare:
-    if: github.ref == 'refs/heads/main' && (github.event_name != 'schedule' || vars.SARAFI_PRODUCTION_RATES == 'true')
+    if: github.ref == 'refs/heads/main'
+    outputs:
+      publish: ${{ steps.package.outputs.ready }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -30,9 +31,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Refresh the feed
+        id: refresh
         if: github.event_name == 'schedule' || (inputs.feed != '' && inputs.feed != 'site')
         env:
-          FEED: ${{ inputs.feed || 'production' }}
+          FEED: ${{ inputs.feed || 'scheduled' }}
           SARAFI_COLLECTOR_READ_KEY: ${{ secrets.SARAFI_COLLECTOR_READ_KEY }}
           SARAFI_TELEGRAM_API_ID: ${{ secrets.SARAFI_TELEGRAM_API_ID }}
           SARAFI_TELEGRAM_API_HASH: ${{ secrets.SARAFI_TELEGRAM_API_HASH }}
@@ -60,6 +62,7 @@ jobs:
             if [[ ! -f rates/test.json ]]; then
               printf '%s\n' '{"version":1,"source":"nerkhyaaab","quotes":[]}' > rates/test.json
             fi
+            git add -- rates/test.json
           else
             : "${SARAFI_TELEGRAM_API_ID:?Missing Telegram App ID}"
             : "${SARAFI_TELEGRAM_API_HASH:?Missing Telegram API hash}"
@@ -70,26 +73,45 @@ jobs:
             git -C "$collector" checkout --quiet
             python3 -m venv "$temporary/venv"
             "$temporary/venv/bin/python" -m pip install --disable-pip-version-check -r "$collector/tools/market-rates/requirements.txt"
-            args=(--output "rates/$FEED.json")
-            if [[ "$FEED" == test ]]; then args+=(--test); fi
-            "$temporary/venv/bin/python" "$collector/tools/market-rates/snapshot.py" "${args[@]}"
+            feeds=("$FEED")
+            if [[ "$FEED" == scheduled ]]; then
+              feeds=(test)
+              if [[ "$PRODUCTION_ENABLED" == true ]]; then feeds+=(production); fi
+            fi
+            refreshed=0
+            for target in "${feeds[@]}"; do
+              args=(--output "rates/$target.json")
+              if [[ "$target" == test ]]; then args+=(--test); fi
+              if "$temporary/venv/bin/python" "$collector/tools/market-rates/snapshot.py" "${args[@]}"; then
+                git add -- "rates/$target.json"
+                refreshed=1
+              else
+                echo "::warning::Could not refresh the $target feed. Keeping the published snapshot."
+              fi
+            done
+            if [[ "$refreshed" == 0 ]]; then exit 1; fi
           fi
           unset GIT_SSH_COMMAND SARAFI_TELEGRAM_API_ID SARAFI_TELEGRAM_API_HASH SARAFI_TELEGRAM_SESSION
-          git add -- "rates/$FEED.json"
           if git diff --cached --quiet; then exit 0; fi
           git -c user.name='Sarafi Rates' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
             commit -m "chore: refresh Sarafi $FEED rates"
           git push origin HEAD:main
+          echo 'updated=true' >> "$GITHUB_OUTPUT"
       - name: Package the public website
+        id: package
+        if: github.event_name != 'schedule' || steps.refresh.outputs.updated == 'true'
         run: |
           mkdir _site
           cp -R .nojekyll index.html styles.css rates.js assets en ps privacy rates _site/
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
       - uses: actions/upload-pages-artifact@v4
+        if: steps.package.outputs.ready == 'true'
         with:
           path: _site
 
   publish:
     needs: prepare
+    if: needs.prepare.outputs.publish == 'true'
     permissions:
       pages: write
       id-token: write
